@@ -1,0 +1,17 @@
+db:
+  build: db
+  environment:
+    MYSQL_DATABASE: "wp"
+    MYSQL_ROOT_PASSWORD: "root"
+    MYSQL_USER: "wp_db_user"
+    MYSQL_PASSWORD: "wp_db_user_password"
+
+php:
+  build: php
+  ports:
+    - "8000:80"
+  volumes:
+    - ./wp:/var/www/html
+    - ./logs:/var/log/apache2
+  links:
+    - db
