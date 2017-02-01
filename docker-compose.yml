@@ -1,17 +1,27 @@
-db:
-  build: db
-  environment:
-    MYSQL_DATABASE: "wp"
-    MYSQL_ROOT_PASSWORD: "root"
-    MYSQL_USER: "wp_db_user"
-    MYSQL_PASSWORD: "wp_db_user_password"
+version: "3"
 
-php:
-  build: php
-  ports:
-    - "8000:80"
-  volumes:
-    - ./wp:/var/www/html
-    - ./logs:/var/log/apache2
-  links:
-    - db
+services:
+  db:
+    build: db
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
+
+  php:
+    build: php
+    ports:
+      - "8000:80"
+    environment:
+      WORDPRESS_DB_HOST: "db"
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_USER_PASSWORD: ${DB_USER_PASSWORD}
+    volumes:
+      - ./wp:/var/www/html
+      - ./logs:/var/log/apache2
+    depends_on:
+      - db
+    links:
+      - db
