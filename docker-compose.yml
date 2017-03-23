@@ -2,7 +2,8 @@ version: "3"
 
 services:
   db:
-    build: db
+    build: 
+      context: ./docker/db
     ports:
       - "${DB_EXPOSE_PORT}:${DB_PORT}"
     environment:
@@ -12,7 +13,8 @@ services:
       MYSQL_PASSWORD: ${DB_USER_PASSWORD}
 
   php:
-    build: php
+    build:
+      context: ./docker/php
     ports:
       - "${WEB_SERVER_EXPOSE_PORT}:${WEB_SERVER_PORT}"
     environment:
@@ -22,8 +24,8 @@ services:
       WORDPRESS_DB_USER: ${DB_USER}
       WORDPRESS_DB_USER_PASSWORD: ${DB_USER_PASSWORD}
     volumes:
-      - ./wp:/var/www/html
-      - ./logs:/var/log/apache2
+      - .:/var/www/html
+      - ./docker/logs:/var/log/apache2
     depends_on:
       - db
     links:
