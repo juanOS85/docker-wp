@@ -19,9 +19,11 @@ RUN apt-get update \
     xml \
     zip \
     && pecl install xdebug
+    && docker-php-ext-enable xdebug
 
-ADD ./php-dev.ini /usr/local/etc/php/conf.d/
-ADD ./xdebug.ini /usr/local/etc/php/conf.d/
+ADD ./conf/php.ini /usr/local/etc/php/conf.d/
+ADD ./conf/php-dev.ini /usr/local/etc/php/conf.d/
+ADD ./conf/xdebug.ini /usr/local/etc/php/conf.d/
 
 # Apache
 ADD ./000-wp.conf /etc/apache2/sites-available/
